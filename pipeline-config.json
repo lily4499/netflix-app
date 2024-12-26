@@ -1,0 +1,58 @@
+{
+  "pipeline": {
+    "name": "NetflixAppPipeline",
+    "roleArn": "arn:aws:iam::637423529262:role/CodeBuildKubectlRole",
+    "artifactStore": {
+      "type": "S3",
+      "location": "lili-codepipeline-artifact-bucket"
+    },
+    "stages": [
+      {
+        "name": "Source",
+        "actions": [
+          {
+            "name": "SourceAction",
+            "actionTypeId": {
+              "category": "Source",
+              "owner": "ThirdParty",
+              "provider": "GitHub",
+              "version": "1"
+            },
+            "runOrder": 1,
+            "configuration": {
+                "Owner": "lily4499",
+                "Repo": "express-app",
+                "Branch": "main",
+                "OAuthToken": "$github_token"
+            },
+            "outputArtifacts": [
+                {
+                    "name": "SourceArtifact"
+                }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Build",
+        "actions": [
+          {
+            "name": "Build",
+            "actionTypeId": {
+              "category": "Build",
+              "owner": "AWS",
+              "provider": "CodeBuild",
+              "version": "1"
+            },
+            "inputArtifacts": [{ "name": "SourceArtifact" }],
+            "outputArtifacts": [{ "name": "BuildArtifact" }],
+            "configuration": {
+              "ProjectName": "NetflixAppBuild"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
