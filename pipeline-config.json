@@ -23,7 +23,7 @@
                 "Owner": "lily4499",
                 "Repo": "netflix-app",
                 "Branch": "main",
-                "OAuthToken": "$github_token",
+                "OAuthToken": "$(aws secretsmanager get-secret-value --secret-id GitHubToken --query SecretString --output text)",
                 "PollForSourceChanges": "false"  
             },
             "outputArtifacts": [
