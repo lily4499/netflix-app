@@ -1,0 +1,17 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423529262.dkr.ecr.us-east-1.amazonaws.com
+      - IMAGE_REPO_NAME=637423529262.dkr.ecr.us-east-1.amazonaws.com/netflix-app
+      - IMAGE_TAG=latest
+  build:
+    commands:
+      - echo Build started on `date`
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG 637423529262.dkr.ecr.us-east-1.amazonaws.com:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
