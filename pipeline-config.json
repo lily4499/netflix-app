@@ -21,7 +21,7 @@
             "runOrder": 1,
             "configuration": {
                 "Owner": "lily4499",
-                "Repo": "express-app",
+                "Repo": "netflix-app",
                 "Branch": "main",
                 "OAuthToken": "$github_token"
             },
