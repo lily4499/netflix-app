@@ -23,7 +23,8 @@
                 "Owner": "lily4499",
                 "Repo": "netflix-app",
                 "Branch": "main",
-                "OAuthToken": "$github_token"
+                "OAuthToken": "$github_token",
+                "PollForSourceChanges": "false"  
             },
             "outputArtifacts": [
                 {
