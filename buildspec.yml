@@ -1,11 +1,12 @@
 version: 0.2
+
 phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423529262.dkr.ecr.us-east-1.amazonaws.com
-      - IMAGE_REPO_NAME=637423529262.dkr.ecr.us-east-1.amazonaws.com/netflix-app
-      - IMAGE_TAG=1
+      - export IMAGE_REPO_NAME=637423529262.dkr.ecr.us-east-1.amazonaws.com/netflix-app
+      - export IMAGE_TAG=1
   build:
     commands:
       - echo Build started on `date`
@@ -22,4 +23,3 @@ phases:
       - echo Applying Kubernetes manifests...
       - kubectl apply -f deployment.yaml
       - echo Deployment to EKS completed!
-
