@@ -5,21 +5,13 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423529262.dkr.ecr.us-east-1.amazonaws.com
       - IMAGE_REPO_NAME=637423529262.dkr.ecr.us-east-1.amazonaws.com/netflix-app
-      - IMAGE_TAG=1
+      - IMAGE_TAG=latest
   build:
     commands:
       - echo Build started on `date`
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG 637423529262.dkr.ecr.us-east-1.amazonaws.com:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
-      - echo Configuring kubectl to connect to EKS...
-      - aws eks update-kubeconfig --region us-east-1 --name my-cluster
-      - echo Updating deployment.yaml with new image tag...
-      - sed -i "s|image: .*|image: $IMAGE_REPO_NAME:$IMAGE_TAG|" deployment.yaml
-      - echo Applying Kubernetes manifests...
-      - kubectl apply -f deployment.yaml
-      - echo Deployment to EKS completed!
-
