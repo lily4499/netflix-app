@@ -10,7 +10,7 @@ phases:
         docker login --username AWS --password-stdin \
         637423529262.dkr.ecr.us-east-1.amazonaws.com
       - export REPO=637423529262.dkr.ecr.us-east-1.amazonaws.com/netflix-app
-      - export IMAGE_TAG=2
+      - export IMAGE_TAG=latest
   build:
     commands:
       - echo Build started on `date`
