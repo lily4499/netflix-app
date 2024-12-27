@@ -16,8 +16,7 @@ phases:
       - echo Build started on `date`
       - |
         docker build -t $REPO:$IMAGE_TAG . && \
-        docker tag $REPO:$IMAGE_TAG \
-        $REPO:$IMAGE_TAG
+        docker tag $REPO:$IMAGE_TAG $REPO:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
@@ -29,8 +28,7 @@ phases:
       - echo Kubectl configured successfully.
       - echo Updating deployment.yaml with new image tag...
       - |
-        sed -i "s|image: .*|image: $REPO:$IMAGE_TAG|" \
-        deployment.yaml
+        sed -i "s|image: .*|image: $REPO:$IMAGE_TAG|" deployment.yaml
       - echo deployment.yaml updated with image: $REPO:$IMAGE_TAG
       - echo Applying Kubernetes manifests...
       - kubectl apply -f deployment.yaml
