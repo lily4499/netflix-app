@@ -20,14 +20,19 @@ phases:
         $REPO:$IMAGE_TAG
   post_build:
     commands:
-      - echo Build completed on `date`
-      - docker push $REPO:$IMAGE_TAG
-      - echo Configuring kubectl to connect to EKS...
-      - aws eks update-kubeconfig --region us-east-1 --name my-cluster
-      - echo Updating deployment.yaml with new image tag...
-      - |
-        sed -i "s|image: .*|image: $REPO:$IMAGE_TAG|" \
-        deployment.yaml
-      - echo Applying Kubernetes manifests...
-      - kubectl apply -f deployment.yaml
-      - echo Deployment to EKS completed!
+  - echo Build completed on `date`
+  - echo Pushing Docker image to repository...
+  - docker push $REPO:$IMAGE_TAG
+  - echo Docker image pushed: $REPO:$IMAGE_TAG
+  - echo Configuring kubectl to connect to EKS...
+  - aws eks update-kubeconfig --region us-east-1 --name my-cluster
+  - echo Kubectl configured successfully.
+  - echo Updating deployment.yaml with new image tag...
+  - |
+    sed -i "s|image: .*|image: $REPO:$IMAGE_TAG|" \
+    deployment.yaml
+  - echo deployment.yaml updated with image: $REPO:$IMAGE_TAG
+  - echo Applying Kubernetes manifests...
+  - kubectl apply -f deployment.yaml
+  - echo Kubernetes manifests applied successfully.
+  - echo Deployment to EKS completed!
